@@ -219,7 +219,7 @@ HCURSOR CenglishgameDlg::OnQueryDragIcon()
 void CenglishgameDlg::SetFont()
 {
 	CFont font;
-	font.CreatePointFont(180, _T("Arial")); // replace 120 with the font size you want
+	font.CreatePointFont(310, _T("Arial")); // replace 120 with the font size you want
 
 	for (auto& item : edits)
 	{
