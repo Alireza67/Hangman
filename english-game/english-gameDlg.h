@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include <vector>
+#include <string>
 
 
 // CenglishgameDlg dialog
@@ -32,6 +34,13 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
+	void SetFont();
+	void Initialize();
+	void InitializeBtns();
+	void InitializeEdits();
+
+	void CheckWithTarget(const CString& input);
+
 	afx_msg void GetA();
 	afx_msg void GetB();
 	afx_msg void GetC();
@@ -59,9 +68,16 @@ public:
 	afx_msg void GetY();
 	afx_msg void GetZ();
 
+	std::string target_{ "MECHANIC" };
+
 	CButton m_btnA, m_btnB, m_btnC, m_btnD, m_btnE, m_btnF;
 	CButton m_btnG, m_btnH, m_btnI, m_btnJ, m_btnK, m_btnL;
 	CButton m_btnM, m_btnN, m_btnO, m_btnP, m_btnQ, m_btnR;
 	CButton m_btnS, m_btnT, m_btnU, m_btnV, m_btnW, m_btnX;
 	CButton m_btnY, m_btnZ;
+	std::vector<CButton*> btns;
+
+	CEdit m_edit1, m_edit2, m_edit3, m_edit4;
+	CEdit m_edit5, m_edit6, m_edit7, m_edit8;
+	std::vector<CEdit*> edits;
 };

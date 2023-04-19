@@ -85,6 +85,15 @@ void CenglishgameDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON24, m_btnX);
 	DDX_Control(pDX, IDC_BUTTON25, m_btnY);
 	DDX_Control(pDX, IDC_BUTTON26, m_btnZ);
+
+	DDX_Control(pDX, IDC_EDIT1, m_edit1);
+	DDX_Control(pDX, IDC_EDIT2, m_edit2);
+	DDX_Control(pDX, IDC_EDIT3, m_edit3);
+	DDX_Control(pDX, IDC_EDIT4, m_edit4);
+	DDX_Control(pDX, IDC_EDIT5, m_edit5);
+	DDX_Control(pDX, IDC_EDIT6, m_edit6);
+	DDX_Control(pDX, IDC_EDIT7, m_edit7);
+	DDX_Control(pDX, IDC_EDIT8, m_edit8);
 }
 
 BEGIN_MESSAGE_MAP(CenglishgameDlg, CDialogEx)
@@ -125,6 +134,8 @@ END_MESSAGE_MAP()
 BOOL CenglishgameDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	Initialize();
+	SetFont();
 
 	// Add "About..." menu item to system menu.
 
@@ -205,158 +216,261 @@ HCURSOR CenglishgameDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CenglishgameDlg::SetFont()
+{
+	CFont font;
+	font.CreatePointFont(180, _T("Arial")); // replace 120 with the font size you want
+
+	for (auto& item : edits)
+	{
+		item->SetFont(&font);
+	}
+}
+
+void CenglishgameDlg::Initialize()
+{
+	InitializeEdits();
+	InitializeBtns();
+}
+
+void CenglishgameDlg::InitializeEdits()
+{
+	edits.emplace_back(&m_edit1);
+	edits.emplace_back(&m_edit2);
+	edits.emplace_back(&m_edit3);
+	edits.emplace_back(&m_edit4);
+	edits.emplace_back(&m_edit5);
+	edits.emplace_back(&m_edit6);
+	edits.emplace_back(&m_edit7);
+	edits.emplace_back(&m_edit8);
+
+	for (auto& item : edits)
+	{
+		item->EnableWindow(FALSE);
+	}
+}
+
+void CenglishgameDlg::CheckWithTarget(const CString& input)
+{
+	std::string str(CW2A(input.GetString()));
+
+	for (size_t i{}; i < target_.size(); i++)
+	{
+		if (target_[i] == str[0])
+		{
+			edits[i]->SetWindowText(input);
+		}
+	}
+}
+
+void CenglishgameDlg::InitializeBtns()
+{
+	btns.emplace_back(&m_btnA);
+	btns.emplace_back(&m_btnB);
+	btns.emplace_back(&m_btnC);
+	btns.emplace_back(&m_btnD);
+	btns.emplace_back(&m_btnE);
+	btns.emplace_back(&m_btnF);
+	btns.emplace_back(&m_btnG);
+	btns.emplace_back(&m_btnH);
+	btns.emplace_back(&m_btnI);
+	btns.emplace_back(&m_btnJ);
+	btns.emplace_back(&m_btnK);
+	btns.emplace_back(&m_btnL);
+	btns.emplace_back(&m_btnM);
+	btns.emplace_back(&m_btnN);
+	btns.emplace_back(&m_btnO);
+	btns.emplace_back(&m_btnP);
+	btns.emplace_back(&m_btnQ);
+	btns.emplace_back(&m_btnR);
+	btns.emplace_back(&m_btnS);
+	btns.emplace_back(&m_btnT);
+	btns.emplace_back(&m_btnU);
+	btns.emplace_back(&m_btnV);
+	btns.emplace_back(&m_btnX);
+	btns.emplace_back(&m_btnY);
+	btns.emplace_back(&m_btnZ);
+	btns.emplace_back(&m_btnW);
+}
+
 void CenglishgameDlg::GetA()
 {
 	CString strCaption;
 	m_btnA.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetB()
 {
 	CString strCaption;
 	m_btnB.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetC()
 {
 	CString strCaption;
 	m_btnC.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetD()
 {
 	CString strCaption;
 	m_btnD.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetE()
 {
 	CString strCaption;
 	m_btnE.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetF()
 {
 	CString strCaption;
 	m_btnF.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetG()
 {
 	CString strCaption;
 	m_btnG.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetH()
 {
 	CString strCaption;
 	m_btnH.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetI()
 {
 	CString strCaption;
 	m_btnI.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetJ()
 {
 	CString strCaption;
 	m_btnJ.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetK()
 {
 	CString strCaption;
 	m_btnK.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetL()
 {
 	CString strCaption;
 	m_btnL.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetM()
 {
 	CString strCaption;
 	m_btnM.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetN()
 {
 	CString strCaption;
 	m_btnN.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetO()
 {
 	CString strCaption;
 	m_btnO.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetP()
 {
 	CString strCaption;
 	m_btnP.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetQ()
 {
 	CString strCaption;
 	m_btnQ.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetR()
 {
 	CString strCaption;
 	m_btnR.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetS()
 {
 	CString strCaption;
 	m_btnS.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetT()
 {
 	CString strCaption;
 	m_btnT.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetU()
 {
 	CString strCaption;
 	m_btnU.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetV()
 {
 	CString strCaption;
 	m_btnV.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetW()
 {
 	CString strCaption;
 	m_btnW.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetX()
 {
 	CString strCaption;
 	m_btnX.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetY()
 {
 	CString strCaption;
 	m_btnY.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
 
 void CenglishgameDlg::GetZ()
 {
 	CString strCaption;
 	m_btnZ.GetWindowText(strCaption);
+	CheckWithTarget(strCaption);
 }
