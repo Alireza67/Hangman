@@ -8,6 +8,9 @@
 #include "english-gameDlg.h"
 #include "afxdialogex.h"
 
+#include <filesystem>
+namespace fs = std::filesystem;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -136,6 +139,7 @@ BOOL CenglishgameDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	Initialize();
 	SetFont();
+	LoadMainImage();
 
 	// Add "About..." menu item to system menu.
 
@@ -250,6 +254,17 @@ void CenglishgameDlg::InitializeEdits()
 	}
 }
 
+void CenglishgameDlg::LoadMainImage()
+{
+	std::wstring buffer;
+	auto size = ::GetCurrentDirectory(0, nullptr);
+	buffer.resize(size - 1);
+	::GetCurrentDirectory(size, const_cast<LPWSTR>(buffer.data()));
+	imageDirectory = fs::path(buffer) / fs::path("images");
+	
+	mp_pictureControl = (CStatic*)GetDlgItem(IDC_PIC_MAIN);	
+}
+
 void CenglishgameDlg::CheckWithTarget(const CString& input)
 {
 	std::string str(CW2A(input.GetString()));
@@ -298,6 +313,17 @@ void CenglishgameDlg::GetA()
 	CString strCaption;
 	m_btnA.GetWindowText(strCaption);
 	CheckWithTarget(strCaption);
+
+	std::wstring fileName = L"mechanic.jpg";
+	ShowMainImage(fileName);
+}
+
+void CenglishgameDlg::ShowMainImage(std::wstring& fileName)
+{
+	auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(fileName));
+	viewImage.Load(imagePath.c_str());
+	viewBitmap.Attach(viewImage.Detach());
+	mp_pictureControl->SetBitmap((HBITMAP)viewBitmap.Detach());
 }
 
 void CenglishgameDlg::GetB()

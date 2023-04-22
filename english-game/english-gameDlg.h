@@ -5,6 +5,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <atlimage.h>
 
 
 // CenglishgameDlg dialog
@@ -38,10 +39,12 @@ public:
 	void Initialize();
 	void InitializeBtns();
 	void InitializeEdits();
+	void LoadMainImage();
 
 	void CheckWithTarget(const CString& input);
 
 	afx_msg void GetA();
+	void ShowMainImage(std::wstring& fileName);
 	afx_msg void GetB();
 	afx_msg void GetC();
 	afx_msg void GetD();
@@ -80,4 +83,9 @@ public:
 	CEdit m_edit1, m_edit2, m_edit3, m_edit4;
 	CEdit m_edit5, m_edit6, m_edit7, m_edit8;
 	std::vector<CEdit*> edits;
+
+	CStatic* mp_pictureControl;
+	CImage viewImage;
+	CBitmap viewBitmap;
+	std::wstring imageDirectory;
 };
