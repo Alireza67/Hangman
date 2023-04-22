@@ -226,7 +226,7 @@ HCURSOR CenglishgameDlg::OnQueryDragIcon()
 void CenglishgameDlg::SetFont()
 {
 	CFont font;
-	font.CreatePointFont(310, _T("Arial")); // replace 120 with the font size you want
+	font.CreatePointFont(310, _T("Arial"));
 
 	for (auto& item : edits)
 	{
@@ -279,7 +279,7 @@ void CenglishgameDlg::InitializeSounds()
 	correctVoicePath = fs::path(soundDirectory) / fs::path("correct.wav");
 }
 
-void CenglishgameDlg::CheckWithTarget(const CString& input)
+void CenglishgameDlg::CheckWithTarget(CMFCButton* btn, const CString& input)
 {
 	std::string str(CW2A(input.GetString()));
 
@@ -294,11 +294,31 @@ void CenglishgameDlg::CheckWithTarget(const CString& input)
 	if (target_.find(str) == std::string::npos)
 	{
 		::PlaySound(errorVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+		ChangeButtonToErrorMode(btn);
 	}
 	else
 	{
 		::PlaySound(correctVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+		ChangeButtonToCorrectMode(btn);
 	}
+}
+
+void CenglishgameDlg::ChangeButtonToCorrectMode(CMFCButton* btn)
+{
+	btn->EnableWindowsTheming(FALSE);
+	btn->m_nFlatStyle = CMFCButton::BUTTONSTYLE_FLAT;
+	btn->m_bTransparent = false;
+	btn->SetFaceColor(RGB(153, 255, 153), true);
+	btn->SetTextColor(RGB(0, 102, 51));
+}
+
+void CenglishgameDlg::ChangeButtonToErrorMode(CMFCButton* btn)
+{
+	btn->EnableWindowsTheming(FALSE);
+	btn->m_nFlatStyle = CMFCButton::BUTTONSTYLE_FLAT;
+	btn->m_bTransparent = false;
+	btn->SetFaceColor(RGB(255, 153, 204), true);
+	btn->SetTextColor(RGB(102, 0, 51));
 }
 
 void CenglishgameDlg::InitializeBtns()
@@ -329,13 +349,29 @@ void CenglishgameDlg::InitializeBtns()
 	btns.emplace_back(&m_btnY);
 	btns.emplace_back(&m_btnZ);
 	btns.emplace_back(&m_btnW);
+
+	ResetKeyboardButtons();
+}
+
+void CenglishgameDlg::ResetKeyboardButtons()
+{
+	for (auto& btn : btns)
+	{
+		btn->EnableWindowsTheming(TRUE);
+		btn->m_nFlatStyle = CMFCButton::BUTTONSTYLE_FLAT;
+		btn->m_bTransparent = false;
+		btn->SetFaceColor(RGB(224, 224, 224), true);
+		btn->SetTextColor(RGB(0, 0, 0));
+		btn->SetFaceColor(RGB(224, 224, 224), true);
+		btn->SetTextColor(RGB(0, 0, 0));
+	}
 }
 
 void CenglishgameDlg::GetA()
 {
 	CString strCaption;
 	m_btnA.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnA, strCaption);
 
 	std::wstring fileName = L"mechanic.jpg";
 	ShowMainImage(fileName);
@@ -353,173 +389,173 @@ void CenglishgameDlg::GetB()
 {
 	CString strCaption;
 	m_btnB.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnB, strCaption);
 }
 
 void CenglishgameDlg::GetC()
 {
 	CString strCaption;
 	m_btnC.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnC, strCaption);
 }
 
 void CenglishgameDlg::GetD()
 {
 	CString strCaption;
 	m_btnD.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnD, strCaption);
 }
 
 void CenglishgameDlg::GetE()
 {
 	CString strCaption;
 	m_btnE.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnE, strCaption);
 }
 
 void CenglishgameDlg::GetF()
 {
 	CString strCaption;
 	m_btnF.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnF, strCaption);
 }
 
 void CenglishgameDlg::GetG()
 {
 	CString strCaption;
 	m_btnG.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnG, strCaption);
 }
 
 void CenglishgameDlg::GetH()
 {
 	CString strCaption;
 	m_btnH.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnH, strCaption);
 }
 
 void CenglishgameDlg::GetI()
 {
 	CString strCaption;
 	m_btnI.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnI, strCaption);
 }
 
 void CenglishgameDlg::GetJ()
 {
 	CString strCaption;
 	m_btnJ.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnJ, strCaption);
 }
 
 void CenglishgameDlg::GetK()
 {
 	CString strCaption;
 	m_btnK.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnK, strCaption);
 }
 
 void CenglishgameDlg::GetL()
 {
 	CString strCaption;
 	m_btnL.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnL, strCaption);
 }
 
 void CenglishgameDlg::GetM()
 {
 	CString strCaption;
 	m_btnM.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnM, strCaption);
 }
 
 void CenglishgameDlg::GetN()
 {
 	CString strCaption;
 	m_btnN.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnN, strCaption);
 }
 
 void CenglishgameDlg::GetO()
 {
 	CString strCaption;
 	m_btnO.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnO, strCaption);
 }
 
 void CenglishgameDlg::GetP()
 {
 	CString strCaption;
 	m_btnP.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnP, strCaption);
 }
 
 void CenglishgameDlg::GetQ()
 {
 	CString strCaption;
 	m_btnQ.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnQ, strCaption);
 }
 
 void CenglishgameDlg::GetR()
 {
 	CString strCaption;
 	m_btnR.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnR, strCaption);
 }
 
 void CenglishgameDlg::GetS()
 {
 	CString strCaption;
 	m_btnS.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnS, strCaption);
 }
 
 void CenglishgameDlg::GetT()
 {
 	CString strCaption;
 	m_btnT.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnT, strCaption);
 }
 
 void CenglishgameDlg::GetU()
 {
 	CString strCaption;
 	m_btnU.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnU, strCaption);
 }
 
 void CenglishgameDlg::GetV()
 {
 	CString strCaption;
 	m_btnV.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnV, strCaption);
 }
 
 void CenglishgameDlg::GetW()
 {
 	CString strCaption;
 	m_btnW.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnW, strCaption);
 }
 
 void CenglishgameDlg::GetX()
 {
 	CString strCaption;
 	m_btnX.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnX, strCaption);
 }
 
 void CenglishgameDlg::GetY()
 {
 	CString strCaption;
 	m_btnY.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnY, strCaption);
 }
 
 void CenglishgameDlg::GetZ()
 {
 	CString strCaption;
 	m_btnZ.GetWindowText(strCaption);
-	CheckWithTarget(strCaption);
+	CheckWithTarget(&m_btnZ, strCaption);
 }

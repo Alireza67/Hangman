@@ -38,11 +38,16 @@ public:
 	void SetFont();
 	void Initialize();
 	void InitializeBtns();
+	void ResetKeyboardButtons();
 	void InitializeEdits();
 	void InitializeMainImage();
 	void InitializeSounds();
 
-	void CheckWithTarget(const CString& input);
+	void CheckWithTarget(CMFCButton* btn, const CString& input);
+
+	void ChangeButtonToCorrectMode(CMFCButton* btn);
+
+	void ChangeButtonToErrorMode(CMFCButton* btn);
 
 	afx_msg void GetA();
 	void ShowMainImage(std::wstring& fileName);
@@ -74,12 +79,13 @@ public:
 
 	std::string target_{ "MECHANIC" };
 
-	CButton m_btnA, m_btnB, m_btnC, m_btnD, m_btnE, m_btnF;
-	CButton m_btnG, m_btnH, m_btnI, m_btnJ, m_btnK, m_btnL;
-	CButton m_btnM, m_btnN, m_btnO, m_btnP, m_btnQ, m_btnR;
-	CButton m_btnS, m_btnT, m_btnU, m_btnV, m_btnW, m_btnX;
-	CButton m_btnY, m_btnZ;
-	std::vector<CButton*> btns;
+	
+	CMFCButton m_btnA, m_btnB, m_btnC, m_btnD, m_btnE, m_btnF;
+	CMFCButton m_btnG, m_btnH, m_btnI, m_btnJ, m_btnK, m_btnL;
+	CMFCButton m_btnM, m_btnN, m_btnO, m_btnP, m_btnQ, m_btnR;
+	CMFCButton m_btnS, m_btnT, m_btnU, m_btnV, m_btnW, m_btnX;
+	CMFCButton m_btnY, m_btnZ;
+	std::vector<CMFCButton*> btns;
 
 	CEdit m_edit1, m_edit2, m_edit3, m_edit4;
 	CEdit m_edit5, m_edit6, m_edit7, m_edit8;
