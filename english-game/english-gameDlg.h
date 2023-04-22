@@ -40,17 +40,17 @@ public:
 	void InitializeBtns();
 	void ResetKeyboardButtons();
 	void InitializeEdits();
-	void InitializeMainImage();
+	void InitializeImages();
 	void InitializeSounds();
 
 	void CheckWithTarget(CMFCButton* btn, const CString& input);
-
+	void DecreaseHealth();
 	void ChangeButtonToCorrectMode(CMFCButton* btn);
-
 	void ChangeButtonToErrorMode(CMFCButton* btn);
+	void ShowMainImage(std::wstring& fileName);
+	void ShowHangmanImage();
 
 	afx_msg void GetA();
-	void ShowMainImage(std::wstring& fileName);
 	afx_msg void GetB();
 	afx_msg void GetC();
 	afx_msg void GetD();
@@ -78,7 +78,6 @@ public:
 	afx_msg void GetZ();
 
 	std::string target_{ "MECHANIC" };
-
 	
 	CMFCButton m_btnA, m_btnB, m_btnC, m_btnD, m_btnE, m_btnF;
 	CMFCButton m_btnG, m_btnH, m_btnI, m_btnJ, m_btnK, m_btnL;
@@ -91,12 +90,16 @@ public:
 	CEdit m_edit5, m_edit6, m_edit7, m_edit8;
 	std::vector<CEdit*> edits;
 
-	CStatic* mp_pictureControl;
+	CStatic* mp_pictureControlMain;
+	CStatic* mp_pictureControlHangMan;
 	CImage viewImage;
 	CBitmap viewBitmap;
 	std::wstring imageDirectory;
+	std::wstring hangmanDirectory;
 
 	std::wstring soundDirectory;
 	std::wstring errorVoicePath;
 	std::wstring correctVoicePath;
+
+	uint8_t errorNumber{ 1 };
 };

@@ -142,7 +142,8 @@ BOOL CenglishgameDlg::OnInitDialog()
 	Initialize();
 	SetFont();
 	InitializeSounds();
-	InitializeMainImage();
+	InitializeImages();
+	ShowHangmanImage();
 
 	// Add "About..." menu item to system menu.
 
@@ -257,15 +258,17 @@ void CenglishgameDlg::InitializeEdits()
 	}
 }
 
-void CenglishgameDlg::InitializeMainImage()
+void CenglishgameDlg::InitializeImages()
 {
 	std::wstring buffer;
 	auto size = ::GetCurrentDirectory(0, nullptr);
 	buffer.resize(size - 1);
 	::GetCurrentDirectory(size, const_cast<LPWSTR>(buffer.data()));
 	imageDirectory = fs::path(buffer) / fs::path("images");
+	hangmanDirectory = fs::path(buffer) / fs::path("hangman");
 	
-	mp_pictureControl = (CStatic*)GetDlgItem(IDC_PIC_MAIN);	
+	mp_pictureControlMain = (CStatic*)GetDlgItem(IDC_PIC_MAIN);
+	mp_pictureControlHangMan = (CStatic*)GetDlgItem(IDC_PIC_HANGMAN);
 }
 
 void CenglishgameDlg::InitializeSounds()
@@ -295,11 +298,22 @@ void CenglishgameDlg::CheckWithTarget(CMFCButton* btn, const CString& input)
 	{
 		::PlaySound(errorVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
 		ChangeButtonToErrorMode(btn);
+		DecreaseHealth();
+		ShowHangmanImage();
 	}
 	else
 	{
 		::PlaySound(correctVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
 		ChangeButtonToCorrectMode(btn);
+	}
+}
+
+void CenglishgameDlg::DecreaseHealth()
+{
+	errorNumber++;
+	if (errorNumber >= 8)
+	{
+		errorNumber = 8;
 	}
 }
 
@@ -382,7 +396,18 @@ void CenglishgameDlg::ShowMainImage(std::wstring& fileName)
 	auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(fileName));
 	viewImage.Load(imagePath.c_str());
 	viewBitmap.Attach(viewImage.Detach());
-	mp_pictureControl->SetBitmap((HBITMAP)viewBitmap.Detach());
+	mp_pictureControlMain->SetBitmap((HBITMAP)viewBitmap.Detach());
+}
+
+void CenglishgameDlg::ShowHangmanImage()
+{
+	std::wstring name = L"hangman";
+	auto number = std::to_wstring(errorNumber);
+	auto fullName = name + number + L".jpg";
+	auto imagePath = std::wstring(fs::path(hangmanDirectory) / fs::path(fullName));
+	viewImage.Load(imagePath.c_str());
+	viewBitmap.Attach(viewImage.Detach());
+	mp_pictureControlHangMan->SetBitmap((HBITMAP)viewBitmap.Detach());
 }
 
 void CenglishgameDlg::GetB()
@@ -559,3 +584,16 @@ void CenglishgameDlg::GetZ()
 	m_btnZ.GetWindowText(strCaption);
 	CheckWithTarget(&m_btnZ, strCaption);
 }
+
+/*
+farmer
+employee
+painter
+postman
+pilot
+put out fire
+take out money from an ATM
+get on a bus
+watch military parade
+wear special clothes
+*/
