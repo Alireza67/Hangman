@@ -8,6 +8,8 @@
 #include "english-gameDlg.h"
 #include "afxdialogex.h"
 
+#include <Mmsystem.h>
+
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -139,7 +141,8 @@ BOOL CenglishgameDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	Initialize();
 	SetFont();
-	LoadMainImage();
+	InitializeSounds();
+	InitializeMainImage();
 
 	// Add "About..." menu item to system menu.
 
@@ -254,7 +257,7 @@ void CenglishgameDlg::InitializeEdits()
 	}
 }
 
-void CenglishgameDlg::LoadMainImage()
+void CenglishgameDlg::InitializeMainImage()
 {
 	std::wstring buffer;
 	auto size = ::GetCurrentDirectory(0, nullptr);
@@ -263,6 +266,17 @@ void CenglishgameDlg::LoadMainImage()
 	imageDirectory = fs::path(buffer) / fs::path("images");
 	
 	mp_pictureControl = (CStatic*)GetDlgItem(IDC_PIC_MAIN);	
+}
+
+void CenglishgameDlg::InitializeSounds()
+{
+	std::wstring buffer;
+	auto size = ::GetCurrentDirectory(0, nullptr);
+	buffer.resize(size - 1);
+	::GetCurrentDirectory(size, const_cast<LPWSTR>(buffer.data()));
+	soundDirectory = fs::path(buffer) / fs::path("sounds");
+	errorVoicePath = fs::path(soundDirectory) / fs::path("error.wav");
+	correctVoicePath = fs::path(soundDirectory) / fs::path("correct.wav");
 }
 
 void CenglishgameDlg::CheckWithTarget(const CString& input)
@@ -275,6 +289,15 @@ void CenglishgameDlg::CheckWithTarget(const CString& input)
 		{
 			edits[i]->SetWindowText(input);
 		}
+	}
+
+	if (target_.find(str) == std::string::npos)
+	{
+		::PlaySound(errorVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+	}
+	else
+	{
+		::PlaySound(correctVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
 	}
 }
 

@@ -39,7 +39,8 @@ public:
 	void Initialize();
 	void InitializeBtns();
 	void InitializeEdits();
-	void LoadMainImage();
+	void InitializeMainImage();
+	void InitializeSounds();
 
 	void CheckWithTarget(const CString& input);
 
@@ -88,4 +89,8 @@ public:
 	CImage viewImage;
 	CBitmap viewBitmap;
 	std::wstring imageDirectory;
+
+	std::wstring soundDirectory;
+	std::wstring errorVoicePath;
+	std::wstring correctVoicePath;
 };
