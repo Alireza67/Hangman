@@ -2,32 +2,32 @@
   "expressions": [
     {
       "key": "mechanic",
-      "hint": "a person who repairs and maintains machinery, motors, etc",
+      "hint": "a person who repairs and maintains machinery, motors, etc.",
       "image": "mechanic.jpg"
     },
     {
       "key": "farmer",
-      "hint": "a person engaged in agriculture, raising living organisms for food or raw materials",
+      "hint": "a person engaged in agriculture, raising living organisms for food or raw materials.",
       "image": "farmer.jpg"
     },
     {
       "key": "employee",
-      "hint": "a person employed for wages or salary",
+      "hint": "a person employed for wages or salary.",
       "image": "employee.jpg"
     },
     {
       "key": "painter",
-      "hint": "a person whose job is painting building",
+      "hint": "a person whose job is painting building.",
       "image": "painter.jpg"
     },
     {
       "key": "postman",
-      "hint": "a person whose job is to collect and deliver letters and packages",
+      "hint": "a person whose job is to collect and deliver letters and packages.",
       "image": "postman.jpg"
     },
     {
       "key": "pilot",
-      "hint": "a person who operates the flying controls of an aircraft",
+      "hint": "a person who operates the flying controls of an aircraft.",
       "image": "pilot.jpg"
     },
     {
@@ -37,7 +37,7 @@
     },
     {
       "key": "take out money from an atm",
-      "hint": "refers to taking money out of a bank account",
+      "hint": "refers to taking money out of a bank account.",
       "image": "take-out-money-from-an-atm.jpg"
     },
     {
@@ -47,12 +47,12 @@
     },
     {
       "key": "watch military parade",
-      "hint": "to observe or view a procession of military personnel and equipment",
+      "hint": "to observe or view a procession of military personnel and equipment.",
       "image": "watch-military-parade.jpg"
     },
     {
       "key": "wear special clothes",
-      "hint": "to dress in clothing that is specific to a particular occasion, event, or culture",
+      "hint": "to dress in clothing that is specific to a particular occasion, event, or culture.",
       "image": "wear-special-clothes.jpg"
     }
   ]

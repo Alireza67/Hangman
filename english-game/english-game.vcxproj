@@ -117,6 +117,12 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>XCOPY "$(ProjectDir)hangman" "$(TargetDir)hangman\" /S /Y
+XCOPY "$(ProjectDir)images" "$(TargetDir)images\" /S /Y
+XCOPY "$(ProjectDir)lessons" "$(TargetDir)lessons\" /S /Y
+XCOPY "$(ProjectDir)sounds" "$(TargetDir)sounds\" /S /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -195,6 +201,12 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <PostBuildEvent>
+      <Command>XCOPY "$(ProjectDir)hangman" "$(TargetDir)hangman\" /S /Y
+XCOPY "$(ProjectDir)images" "$(TargetDir)images\" /S /Y
+XCOPY "$(ProjectDir)lessons" "$(TargetDir)lessons\" /S /Y
+XCOPY "$(ProjectDir)sounds" "$(TargetDir)sounds\" /S /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="customEdit.h" />
