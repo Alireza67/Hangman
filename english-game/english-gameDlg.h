@@ -7,6 +7,7 @@
 #include <string>
 #include <atlimage.h>
 #include "structs.h"
+#include "customEdit.h"
 
 // CenglishgameDlg dialog
 class CenglishgameDlg : public CDialogEx
@@ -46,7 +47,7 @@ public:
 
 	void DecreaseHealth();
 	void ShowHangmanImage();
-	void ShowMainImage(std::wstring& fileName);
+	void ShowMainImage(std::string& fileName);
 	void ChangeButtonToErrorMode(CMFCButton* btn);
 	void ChangeButtonToCorrectMode(CMFCButton* btn);
 	void SelectRandomTarget(const std::vector<Expression>& lesson);
@@ -89,8 +90,13 @@ public:
 	CMFCButton m_btnY, m_btnZ;
 	std::vector<CMFCButton*> btns;
 
-	CEdit m_edit1, m_edit2, m_edit3, m_edit4;
-	CEdit m_edit5, m_edit6, m_edit7, m_edit8;
+	CEdit m_edit1, m_edit2, m_edit3, m_edit4, m_edit5, m_edit6, m_edit7, m_edit8;
+	CEdit m_edit9, m_edit10, m_edit11, m_edit12, m_edit13, m_edit14, m_edit15, m_edit16;
+	CEdit m_edit17, m_edit18, m_edit19, m_edit20, m_edit21, m_edit23, m_edit24, m_edit25;
+	CEdit m_edit26, m_edit27, m_edit28, m_edit29, m_edit30, m_edit31, m_edit32, m_edit33;
+	CEdit m_edit34, m_edit35, m_edit36, m_edit37, m_edit38, m_edit39, m_edit40, m_edit41;
+	CEdit m_edit42, m_edit43;
+	CustomEdit m_editHint;
 	std::vector<CEdit*> edits;
 
 	CStatic* mp_pictureControlMain;

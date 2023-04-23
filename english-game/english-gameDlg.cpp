@@ -101,6 +101,42 @@ void CenglishgameDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT6, m_edit6);
 	DDX_Control(pDX, IDC_EDIT7, m_edit7);
 	DDX_Control(pDX, IDC_EDIT8, m_edit8);
+	DDX_Control(pDX, IDC_EDIT9, m_edit9);
+	DDX_Control(pDX, IDC_EDIT10, m_edit10);
+	DDX_Control(pDX, IDC_EDIT11, m_edit11);
+	DDX_Control(pDX, IDC_EDIT12, m_edit12);
+	DDX_Control(pDX, IDC_EDIT13, m_edit13);
+	DDX_Control(pDX, IDC_EDIT14, m_edit14);
+	DDX_Control(pDX, IDC_EDIT15, m_edit15);
+	DDX_Control(pDX, IDC_EDIT16, m_edit16);
+	DDX_Control(pDX, IDC_EDIT17, m_edit17);
+	DDX_Control(pDX, IDC_EDIT18, m_edit18);
+	DDX_Control(pDX, IDC_EDIT19, m_edit19);
+	DDX_Control(pDX, IDC_EDIT20, m_edit20);
+	DDX_Control(pDX, IDC_EDIT21, m_edit21);
+	DDX_Control(pDX, IDC_EDIT23, m_edit23);
+	DDX_Control(pDX, IDC_EDIT24, m_edit24);
+	DDX_Control(pDX, IDC_EDIT25, m_edit25);
+	DDX_Control(pDX, IDC_EDIT26, m_edit26);
+	DDX_Control(pDX, IDC_EDIT27, m_edit27);
+	DDX_Control(pDX, IDC_EDIT28, m_edit28);
+	DDX_Control(pDX, IDC_EDIT29, m_edit29);
+	DDX_Control(pDX, IDC_EDIT30, m_edit30);
+	DDX_Control(pDX, IDC_EDIT31, m_edit31);
+	DDX_Control(pDX, IDC_EDIT32, m_edit32);
+	DDX_Control(pDX, IDC_EDIT33, m_edit33);
+	DDX_Control(pDX, IDC_EDIT34, m_edit34);
+	DDX_Control(pDX, IDC_EDIT35, m_edit35);
+	DDX_Control(pDX, IDC_EDIT36, m_edit36);
+	DDX_Control(pDX, IDC_EDIT37, m_edit37);
+	DDX_Control(pDX, IDC_EDIT38, m_edit38);
+	DDX_Control(pDX, IDC_EDIT39, m_edit39);
+	DDX_Control(pDX, IDC_EDIT40, m_edit40);
+	DDX_Control(pDX, IDC_EDIT41, m_edit41);
+	DDX_Control(pDX, IDC_EDIT42, m_edit42);
+	DDX_Control(pDX, IDC_EDIT43, m_edit43);
+
+	DDX_Control(pDX, IDC_EDIT_HINT, m_editHint);
 }
 
 BEGIN_MESSAGE_MAP(CenglishgameDlg, CDialogEx)
@@ -149,7 +185,17 @@ BOOL CenglishgameDlg::OnInitDialog()
 	ShowHangmanImage();
 	auto lesson = GetLesson(L"lesson-1.json");
 	SelectRandomTarget(lesson);
+	ShowMainImage(target.imageName);
 
+	CFont font;
+	font.CreatePointFont(150, _T("Comic"));
+	m_editHint.SetFont(&font);
+	m_editHint.ModifyStyle(ES_AUTOVSCROLL, 0);
+	m_editHint.ModifyStyle(ES_AUTOHSCROLL, 0);
+	
+
+	auto hintText = std::wstring(target.hint.begin(), target.hint.end());
+	m_editHint.SetWindowText(hintText.c_str());
 
 
 	// Add "About..." menu item to system menu.
@@ -234,7 +280,7 @@ HCURSOR CenglishgameDlg::OnQueryDragIcon()
 void CenglishgameDlg::SetFont()
 {
 	CFont font;
-	font.CreatePointFont(310, _T("Arial"));
+	font.CreatePointFont(190, _T("Arial"));
 
 	for (auto& item : edits)
 	{
@@ -258,6 +304,40 @@ void CenglishgameDlg::InitializeEdits()
 	edits.emplace_back(&m_edit6);
 	edits.emplace_back(&m_edit7);
 	edits.emplace_back(&m_edit8);
+	edits.emplace_back(&m_edit9);
+	edits.emplace_back(&m_edit10);
+	edits.emplace_back(&m_edit11);
+	edits.emplace_back(&m_edit12);
+	edits.emplace_back(&m_edit13);
+	edits.emplace_back(&m_edit14);
+	edits.emplace_back(&m_edit15);
+	edits.emplace_back(&m_edit16);
+	edits.emplace_back(&m_edit17);
+	edits.emplace_back(&m_edit18);
+	edits.emplace_back(&m_edit19);
+	edits.emplace_back(&m_edit20);
+	edits.emplace_back(&m_edit21);
+	edits.emplace_back(&m_edit23);
+	edits.emplace_back(&m_edit24);
+	edits.emplace_back(&m_edit25);
+	edits.emplace_back(&m_edit26);
+	edits.emplace_back(&m_edit27);
+	edits.emplace_back(&m_edit28);
+	edits.emplace_back(&m_edit29);
+	edits.emplace_back(&m_edit30);
+	edits.emplace_back(&m_edit31);
+	edits.emplace_back(&m_edit32);
+	edits.emplace_back(&m_edit33);
+	edits.emplace_back(&m_edit34);
+	edits.emplace_back(&m_edit35);
+	edits.emplace_back(&m_edit36);
+	edits.emplace_back(&m_edit37);
+	edits.emplace_back(&m_edit38);
+	edits.emplace_back(&m_edit39);
+	edits.emplace_back(&m_edit40);
+	edits.emplace_back(&m_edit41);
+	edits.emplace_back(&m_edit42);
+	edits.emplace_back(&m_edit43);
 
 	for (auto& item : edits)
 	{
@@ -412,19 +492,10 @@ void CenglishgameDlg::ResetKeyboardButtons()
 	}
 }
 
-void CenglishgameDlg::GetA()
+void CenglishgameDlg::ShowMainImage(std::string& fileName)
 {
-	CString strCaption;
-	m_btnA.GetWindowText(strCaption);
-	CheckWithTarget(&m_btnA, strCaption);
-
-	std::wstring fileName = L"mechanic.jpg";
-	ShowMainImage(fileName);
-}
-
-void CenglishgameDlg::ShowMainImage(std::wstring& fileName)
-{
-	auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(fileName));
+	auto name = std::wstring(fileName.begin(), fileName.end());
+	auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(name));
 	viewImage.Load(imagePath.c_str());
 	viewBitmap.Attach(viewImage.Detach());
 	mp_pictureControlMain->SetBitmap((HBITMAP)viewBitmap.Detach());
@@ -439,6 +510,13 @@ void CenglishgameDlg::ShowHangmanImage()
 	viewImage.Load(imagePath.c_str());
 	viewBitmap.Attach(viewImage.Detach());
 	mp_pictureControlHangMan->SetBitmap((HBITMAP)viewBitmap.Detach());
+}
+
+void CenglishgameDlg::GetA()
+{
+	CString strCaption;
+	m_btnA.GetWindowText(strCaption);
+	CheckWithTarget(&m_btnA, strCaption);
 }
 
 void CenglishgameDlg::GetB()
