@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include <atlimage.h>
-
+#include "structs.h"
 
 // CenglishgameDlg dialog
 class CenglishgameDlg : public CDialogEx
@@ -42,7 +42,9 @@ public:
 	void InitializeEdits();
 	void InitializeImages();
 	void InitializeSounds();
+	void InitializeLesson();
 
+	std::vector<Expression> GetLesson(const std::wstring& fileName);
 	void CheckWithTarget(CMFCButton* btn, const CString& input);
 	void DecreaseHealth();
 	void ChangeButtonToCorrectMode(CMFCButton* btn);
@@ -100,6 +102,8 @@ public:
 	std::wstring soundDirectory;
 	std::wstring errorVoicePath;
 	std::wstring correctVoicePath;
+
+	std::wstring lessonsDirectory;
 
 	uint8_t errorNumber{ 1 };
 };

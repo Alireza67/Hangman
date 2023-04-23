@@ -10,6 +10,8 @@
 
 #include <Mmsystem.h>
 
+#include "databaseReader.h"
+
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -143,7 +145,10 @@ BOOL CenglishgameDlg::OnInitDialog()
 	SetFont();
 	InitializeSounds();
 	InitializeImages();
+	InitializeLesson();
 	ShowHangmanImage();
+	auto lesson = GetLesson(L"lesson-1.json");
+
 
 	// Add "About..." menu item to system menu.
 
@@ -280,6 +285,21 @@ void CenglishgameDlg::InitializeSounds()
 	soundDirectory = fs::path(buffer) / fs::path("sounds");
 	errorVoicePath = fs::path(soundDirectory) / fs::path("error.wav");
 	correctVoicePath = fs::path(soundDirectory) / fs::path("correct.wav");
+}
+
+void CenglishgameDlg::InitializeLesson()
+{
+	std::wstring buffer;
+	auto size = ::GetCurrentDirectory(0, nullptr);
+	buffer.resize(size - 1);
+	::GetCurrentDirectory(size, const_cast<LPWSTR>(buffer.data()));
+	lessonsDirectory = fs::path(buffer) / fs::path("lessons");
+}
+
+std::vector<Expression> CenglishgameDlg::GetLesson(const std::wstring& fileName)
+{
+	std::wstring filePath = fs::path(lessonsDirectory) / fs::path(fileName);
+	return DatabaseReader::ReadLesson(filePath);
 }
 
 void CenglishgameDlg::CheckWithTarget(CMFCButton* btn, const CString& input)
@@ -584,16 +604,3 @@ void CenglishgameDlg::GetZ()
 	m_btnZ.GetWindowText(strCaption);
 	CheckWithTarget(&m_btnZ, strCaption);
 }
-
-/*
-farmer
-employee
-painter
-postman
-pilot
-put out fire
-take out money from an ATM
-get on a bus
-watch military parade
-wear special clothes
-*/
