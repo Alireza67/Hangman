@@ -38,19 +38,20 @@ public:
 	void SetFont();
 	void Initialize();
 	void InitializeBtns();
-	void ResetKeyboardButtons();
 	void InitializeEdits();
 	void InitializeImages();
 	void InitializeSounds();
 	void InitializeLesson();
+	void ResetKeyboardButtons();
 
-	std::vector<Expression> GetLesson(const std::wstring& fileName);
-	void CheckWithTarget(CMFCButton* btn, const CString& input);
 	void DecreaseHealth();
-	void ChangeButtonToCorrectMode(CMFCButton* btn);
-	void ChangeButtonToErrorMode(CMFCButton* btn);
-	void ShowMainImage(std::wstring& fileName);
 	void ShowHangmanImage();
+	void ShowMainImage(std::wstring& fileName);
+	void ChangeButtonToErrorMode(CMFCButton* btn);
+	void ChangeButtonToCorrectMode(CMFCButton* btn);
+	void SelectRandomTarget(const std::vector<Expression>& lesson);
+	void CheckWithTarget(CMFCButton* btn, const CString& input);
+	std::vector<Expression> GetLesson(const std::wstring& fileName);
 
 	afx_msg void GetA();
 	afx_msg void GetB();
@@ -79,7 +80,7 @@ public:
 	afx_msg void GetY();
 	afx_msg void GetZ();
 
-	std::string target_{ "MECHANIC" };
+	Expression target;
 	
 	CMFCButton m_btnA, m_btnB, m_btnC, m_btnD, m_btnE, m_btnF;
 	CMFCButton m_btnG, m_btnH, m_btnI, m_btnJ, m_btnK, m_btnL;

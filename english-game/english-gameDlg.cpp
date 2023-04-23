@@ -148,6 +148,8 @@ BOOL CenglishgameDlg::OnInitDialog()
 	InitializeLesson();
 	ShowHangmanImage();
 	auto lesson = GetLesson(L"lesson-1.json");
+	SelectRandomTarget(lesson);
+
 
 
 	// Add "About..." menu item to system menu.
@@ -304,17 +306,19 @@ std::vector<Expression> CenglishgameDlg::GetLesson(const std::wstring& fileName)
 
 void CenglishgameDlg::CheckWithTarget(CMFCButton* btn, const CString& input)
 {
+	auto key = target.key;
+	std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) { return std::toupper(c); });
 	std::string str(CW2A(input.GetString()));
 
-	for (size_t i{}; i < target_.size(); i++)
+	for (size_t i{}; i < key.size(); i++)
 	{
-		if (target_[i] == str[0])
+		if (key[i] == str[0])
 		{
 			edits[i]->SetWindowText(input);
 		}
 	}
 
-	if (target_.find(str) == std::string::npos)
+	if (key.find(str) == std::string::npos)
 	{
 		::PlaySound(errorVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
 		ChangeButtonToErrorMode(btn);
@@ -344,6 +348,13 @@ void CenglishgameDlg::ChangeButtonToCorrectMode(CMFCButton* btn)
 	btn->m_bTransparent = false;
 	btn->SetFaceColor(RGB(153, 255, 153), true);
 	btn->SetTextColor(RGB(0, 102, 51));
+}
+
+void CenglishgameDlg::SelectRandomTarget(const std::vector<Expression>& lesson)
+{
+	std::srand(std::time(nullptr));
+	int randomNumber = std::rand() % lesson.size();
+	target = lesson[randomNumber];
 }
 
 void CenglishgameDlg::ChangeButtonToErrorMode(CMFCButton* btn)
