@@ -51,11 +51,14 @@ public:
 	void ShowHangmanImage();
 	void UpdateHint(const std::string& hint);
 	void ShowMainImage(std::string& fileName);
+	void ResetDisplay(const std::string& input);
 	void ChangeButtonToErrorMode(CMFCButton* btn);
 	void ChangeButtonToCorrectMode(CMFCButton* btn);
 	void SelectRandomTarget(const std::vector<Expression>& lesson);
 	void CheckWithTarget(CMFCButton* btn, const CString& input);
 	std::vector<Expression> GetLesson(const std::wstring& fileName);
+
+	afx_msg void GoNext();
 
 	afx_msg void GetA();
 	afx_msg void GetB();
@@ -120,6 +123,4 @@ public:
 	std::wstring lessonsDirectory;
 
 	uint8_t errorNumber{ 1 };
-	afx_msg void GoNext();
-	void ResetDisplay();
 };

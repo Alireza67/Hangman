@@ -187,6 +187,7 @@ BOOL CenglishgameDlg::OnInitDialog()
 	ShowHangmanImage();
 	lesson = GetLesson(L"lesson-1.json");
 	SelectRandomTarget(lesson);
+	ResetDisplay(target.key);
 	ShowMainImage(target.imageName);
 	InitializeHint();
 	InitializeNextButton();
@@ -729,17 +730,28 @@ void CenglishgameDlg::GoNext()
 	ShowMainImage(target.imageName);
 	InitializeHint();
 	errorNumber = 1;
-	ResetDisplay();
+	ResetDisplay(target.key);
 	ShowHangmanImage();
 	ResetKeyboardButtons();
 	UpdateHint(target.hint);
 }
 
-void CenglishgameDlg::ResetDisplay()
+void CenglishgameDlg::ResetDisplay(const std::string& input)
 {
-
 	for (auto& item : edits)
 	{
 		item->SetWindowText(L"");
+		item->ShowWindow(SW_HIDE);
+	}
+
+	if (edits.size() >= input.size())
+	{
+		for (size_t i{}; i < input.size(); i++)
+		{
+			if (input[i] != ' ')
+			{
+				edits[i]->ShowWindow(SW_SHOW);
+			}
+		}		
 	}
 }
