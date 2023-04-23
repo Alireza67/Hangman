@@ -92,6 +92,7 @@ void CenglishgameDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON24, m_btnX);
 	DDX_Control(pDX, IDC_BUTTON25, m_btnY);
 	DDX_Control(pDX, IDC_BUTTON26, m_btnZ);
+	DDX_Control(pDX, IDC_BUTTON_NEXT, next);
 
 	DDX_Control(pDX, IDC_EDIT1, m_edit1);
 	DDX_Control(pDX, IDC_EDIT2, m_edit2);
@@ -192,10 +193,14 @@ BOOL CenglishgameDlg::OnInitDialog()
 	m_editHint.SetFont(&font);
 	m_editHint.ModifyStyle(ES_AUTOVSCROLL, 0);
 	m_editHint.ModifyStyle(ES_AUTOHSCROLL, 0);
-	
-
 	auto hintText = std::wstring(target.hint.begin(), target.hint.end());
 	m_editHint.SetWindowText(hintText.c_str());
+
+
+	viewImage.Load(L"C:\\Users\\Alireza\\source\\repos\\userInterface\\english-game\\hangman\\next.jpg");
+	viewBitmap.Attach(viewImage.Detach());
+	next.SetBitmap((HBITMAP)viewBitmap.Detach());
+
 
 
 	// Add "About..." menu item to system menu.

@@ -90,6 +90,8 @@ public:
 	CMFCButton m_btnY, m_btnZ;
 	std::vector<CMFCButton*> btns;
 
+	CMFCButton next;
+
 	CEdit m_edit1, m_edit2, m_edit3, m_edit4, m_edit5, m_edit6, m_edit7, m_edit8;
 	CEdit m_edit9, m_edit10, m_edit11, m_edit12, m_edit13, m_edit14, m_edit15, m_edit16;
 	CEdit m_edit17, m_edit18, m_edit19, m_edit20, m_edit21, m_edit23, m_edit24, m_edit25;
