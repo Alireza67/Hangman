@@ -38,15 +38,18 @@ protected:
 public:
 	void SetFont();
 	void Initialize();
+	void InitializeHint();
 	void InitializeBtns();
 	void InitializeEdits();
 	void InitializeImages();
 	void InitializeSounds();
 	void InitializeLesson();
+	void InitializeNextButton();
 	void ResetKeyboardButtons();
 
 	void DecreaseHealth();
 	void ShowHangmanImage();
+	void UpdateHint(const std::string& hint);
 	void ShowMainImage(std::string& fileName);
 	void ChangeButtonToErrorMode(CMFCButton* btn);
 	void ChangeButtonToCorrectMode(CMFCButton* btn);
@@ -82,6 +85,8 @@ public:
 	afx_msg void GetZ();
 
 	Expression target;
+	uint16_t targetIndex{};
+	std::vector<Expression> lesson;
 	
 	CMFCButton m_btnA, m_btnB, m_btnC, m_btnD, m_btnE, m_btnF;
 	CMFCButton m_btnG, m_btnH, m_btnI, m_btnJ, m_btnK, m_btnL;
@@ -115,4 +120,6 @@ public:
 	std::wstring lessonsDirectory;
 
 	uint8_t errorNumber{ 1 };
+	afx_msg void GoNext();
+	void ResetDisplay();
 };

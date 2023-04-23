@@ -170,6 +170,7 @@ BEGIN_MESSAGE_MAP(CenglishgameDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON24, &CenglishgameDlg::GetX)
 	ON_BN_CLICKED(IDC_BUTTON25, &CenglishgameDlg::GetY)
 	ON_BN_CLICKED(IDC_BUTTON26, &CenglishgameDlg::GetZ)
+	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CenglishgameDlg::GoNext)
 END_MESSAGE_MAP()
 
 
@@ -184,25 +185,16 @@ BOOL CenglishgameDlg::OnInitDialog()
 	InitializeImages();
 	InitializeLesson();
 	ShowHangmanImage();
-	auto lesson = GetLesson(L"lesson-1.json");
+	lesson = GetLesson(L"lesson-1.json");
 	SelectRandomTarget(lesson);
 	ShowMainImage(target.imageName);
-
-	CFont font;
-	font.CreatePointFont(150, _T("Comic"));
-	m_editHint.SetFont(&font);
-	m_editHint.ModifyStyle(ES_AUTOVSCROLL, 0);
-	m_editHint.ModifyStyle(ES_AUTOHSCROLL, 0);
-	auto hintText = std::wstring(target.hint.begin(), target.hint.end());
-	m_editHint.SetWindowText(hintText.c_str());
-
-
-	viewImage.Load(L"C:\\Users\\Alireza\\source\\repos\\userInterface\\english-game\\hangman\\next.jpg");
-	viewBitmap.Attach(viewImage.Detach());
-	next.SetBitmap((HBITMAP)viewBitmap.Detach());
-
-
-
+	InitializeHint();
+	InitializeNextButton();
+	UpdateHint(target.hint);
+	
+	
+	
+	
 	// Add "About..." menu item to system menu.
 
 	// IDM_ABOUTBOX must be in the system command range.
@@ -350,6 +342,14 @@ void CenglishgameDlg::InitializeEdits()
 	}
 }
 
+void CenglishgameDlg::InitializeNextButton()
+{
+	auto path = fs::path(hangmanDirectory) / fs::path("next.jpg");
+	viewImage.Load(path.c_str());
+	viewBitmap.Attach(viewImage.Detach());
+	next.SetBitmap((HBITMAP)viewBitmap.Detach());
+}
+
 void CenglishgameDlg::InitializeImages()
 {
 	std::wstring buffer;
@@ -372,6 +372,15 @@ void CenglishgameDlg::InitializeSounds()
 	soundDirectory = fs::path(buffer) / fs::path("sounds");
 	errorVoicePath = fs::path(soundDirectory) / fs::path("error.wav");
 	correctVoicePath = fs::path(soundDirectory) / fs::path("correct.wav");
+}
+
+void CenglishgameDlg::InitializeHint()
+{
+	CFont font;
+	font.CreatePointFont(150, _T("ComicSense"));
+	m_editHint.SetFont(&font);
+	m_editHint.ModifyStyle(ES_AUTOVSCROLL, 0);
+	m_editHint.ModifyStyle(ES_AUTOHSCROLL, 0);
 }
 
 void CenglishgameDlg::InitializeLesson()
@@ -438,8 +447,8 @@ void CenglishgameDlg::ChangeButtonToCorrectMode(CMFCButton* btn)
 void CenglishgameDlg::SelectRandomTarget(const std::vector<Expression>& lesson)
 {
 	std::srand(std::time(nullptr));
-	int randomNumber = std::rand() % lesson.size();
-	target = lesson[randomNumber];
+	targetIndex = std::rand() % lesson.size();
+	target = lesson[targetIndex];
 }
 
 void CenglishgameDlg::ChangeButtonToErrorMode(CMFCButton* btn)
@@ -515,6 +524,12 @@ void CenglishgameDlg::ShowHangmanImage()
 	viewImage.Load(imagePath.c_str());
 	viewBitmap.Attach(viewImage.Detach());
 	mp_pictureControlHangMan->SetBitmap((HBITMAP)viewBitmap.Detach());
+}
+
+void CenglishgameDlg::UpdateHint(const std::string& hint)
+{
+	auto hintText = std::wstring(hint.begin(), hint.end());
+	m_editHint.SetWindowText(hintText.c_str());
 }
 
 void CenglishgameDlg::GetA()
@@ -697,4 +712,34 @@ void CenglishgameDlg::GetZ()
 	CString strCaption;
 	m_btnZ.GetWindowText(strCaption);
 	CheckWithTarget(&m_btnZ, strCaption);
+}
+
+void CenglishgameDlg::GoNext()
+{
+	if (targetIndex == (lesson.size() - 1))
+	{
+		targetIndex = 0;
+	}
+	else
+	{
+		targetIndex++;
+	}
+	target = lesson[targetIndex];
+
+	ShowMainImage(target.imageName);
+	InitializeHint();
+	errorNumber = 1;
+	ResetDisplay();
+	ShowHangmanImage();
+	ResetKeyboardButtons();
+	UpdateHint(target.hint);
+}
+
+void CenglishgameDlg::ResetDisplay()
+{
+
+	for (auto& item : edits)
+	{
+		item->SetWindowText(L"");
+	}
 }
