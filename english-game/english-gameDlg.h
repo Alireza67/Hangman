@@ -5,7 +5,11 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <functional>
+#include <map>
+
 #include <atlimage.h>
+
 #include "structs.h"
 #include "customEdit.h"
 
@@ -34,6 +38,7 @@ protected:
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
+	BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
 public:
 	void SetFont();
@@ -86,6 +91,7 @@ public:
 	afx_msg void GetX();
 	afx_msg void GetY();
 	afx_msg void GetZ();
+	std::map<uint32_t, std::function<void()>>mapFunction;
 
 	Expression target;
 	uint16_t targetIndex{};

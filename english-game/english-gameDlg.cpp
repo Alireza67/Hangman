@@ -88,8 +88,8 @@ void CenglishgameDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUTTON20, m_btnT);
 	DDX_Control(pDX, IDC_BUTTON21, m_btnU);
 	DDX_Control(pDX, IDC_BUTTON22, m_btnV);
-	DDX_Control(pDX, IDC_BUTTON23, m_btnW);
-	DDX_Control(pDX, IDC_BUTTON24, m_btnX);
+	DDX_Control(pDX, IDC_BUTTON24, m_btnW);
+	DDX_Control(pDX, IDC_BUTTON23, m_btnX);
 	DDX_Control(pDX, IDC_BUTTON25, m_btnY);
 	DDX_Control(pDX, IDC_BUTTON26, m_btnZ);
 	DDX_Control(pDX, IDC_BUTTON_NEXT, next);
@@ -166,8 +166,8 @@ BEGIN_MESSAGE_MAP(CenglishgameDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON20, &CenglishgameDlg::GetT)
 	ON_BN_CLICKED(IDC_BUTTON21, &CenglishgameDlg::GetU)
 	ON_BN_CLICKED(IDC_BUTTON22, &CenglishgameDlg::GetV)
-	ON_BN_CLICKED(IDC_BUTTON23, &CenglishgameDlg::GetW)
-	ON_BN_CLICKED(IDC_BUTTON24, &CenglishgameDlg::GetX)
+	ON_BN_CLICKED(IDC_BUTTON24, &CenglishgameDlg::GetW)
+	ON_BN_CLICKED(IDC_BUTTON23, &CenglishgameDlg::GetX)
 	ON_BN_CLICKED(IDC_BUTTON25, &CenglishgameDlg::GetY)
 	ON_BN_CLICKED(IDC_BUTTON26, &CenglishgameDlg::GetZ)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CenglishgameDlg::GoNext)
@@ -491,6 +491,34 @@ void CenglishgameDlg::InitializeBtns()
 	btns.emplace_back(&m_btnW);
 
 	ResetKeyboardButtons();
+
+	auto keyboardCode = 0x41;
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetA, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetB, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetC, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetD, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetE, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetF, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetG, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetH, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetI, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetJ, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetK, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetL, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetM, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetN, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetO, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetP, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetQ, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetR, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetS, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetT, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetU, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetV, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetW, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetX, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetY, this);
+	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetZ, this);
 }
 
 void CenglishgameDlg::ResetKeyboardButtons()
@@ -754,4 +782,16 @@ void CenglishgameDlg::ResetDisplay(const std::string& input)
 			}
 		}		
 	}
+}
+
+BOOL CenglishgameDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (mapFunction.count(pMsg->wParam))
+		{
+			mapFunction[pMsg->wParam]();
+		}
+	}
+	return CDialog::PreTranslateMessage(pMsg);
 }
