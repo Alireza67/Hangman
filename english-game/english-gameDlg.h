@@ -35,6 +35,7 @@ protected:
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
+	void CalculateNumberOfLetter();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
@@ -45,6 +46,7 @@ public:
 	void Initialize();
 	void InitializeHint();
 	void InitializeBtns();
+	void ConnectKeyboard();
 	void InitializeEdits();
 	void InitializeImages();
 	void InitializeSounds();
@@ -61,9 +63,12 @@ public:
 	void ChangeButtonToCorrectMode(CMFCButton* btn);
 	void SelectRandomTarget(const std::vector<Expression>& lesson);
 	void CheckWithTarget(CMFCButton* btn, const CString& input);
+	void ShowAnswer(std::string& key);
 	std::vector<Expression> GetLesson(const std::wstring& fileName);
 
 	afx_msg void GoNext();
+
+	void ResetBtns();
 
 	afx_msg void GetA();
 	afx_msg void GetB();
@@ -124,9 +129,12 @@ public:
 
 	std::wstring soundDirectory;
 	std::wstring errorVoicePath;
+	std::wstring loseVoicePath;
 	std::wstring correctVoicePath;
+	std::wstring winVoicePath;
 
 	std::wstring lessonsDirectory;
 
 	uint8_t errorNumber{ 1 };
+	int16_t numberOfLetter{};
 };

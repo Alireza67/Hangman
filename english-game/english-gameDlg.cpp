@@ -180,6 +180,7 @@ BOOL CenglishgameDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	Initialize();
+	ConnectKeyboard();
 	SetFont();
 	InitializeSounds();
 	InitializeImages();
@@ -187,14 +188,12 @@ BOOL CenglishgameDlg::OnInitDialog()
 	ShowHangmanImage();
 	lesson = GetLesson(L"lesson-1.json");
 	SelectRandomTarget(lesson);
+	CalculateNumberOfLetter();
 	ResetDisplay(target.key);
 	ShowMainImage(target.imageName);
 	InitializeHint();
 	InitializeNextButton();
 	UpdateHint(target.hint);
-	
-	
-	
 	
 	// Add "About..." menu item to system menu.
 
@@ -224,6 +223,18 @@ BOOL CenglishgameDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void CenglishgameDlg::CalculateNumberOfLetter()
+{
+	numberOfLetter = 0;
+	for (auto& item : target.key)
+	{
+		if (item != ' ')
+		{
+			numberOfLetter++;
+		}
+	}
 }
 
 void CenglishgameDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -373,6 +384,8 @@ void CenglishgameDlg::InitializeSounds()
 	soundDirectory = fs::path(buffer) / fs::path("sounds");
 	errorVoicePath = fs::path(soundDirectory) / fs::path("error.wav");
 	correctVoicePath = fs::path(soundDirectory) / fs::path("correct.wav");
+	winVoicePath = fs::path(soundDirectory) / fs::path("win.wav");
+	loseVoicePath = fs::path(soundDirectory) / fs::path("lose.wav");
 }
 
 void CenglishgameDlg::InitializeHint()
@@ -410,20 +423,55 @@ void CenglishgameDlg::CheckWithTarget(CMFCButton* btn, const CString& input)
 		if (key[i] == str[0])
 		{
 			edits[i]->SetWindowText(input);
+			numberOfLetter--;
 		}
 	}
 
 	if (key.find(str) == std::string::npos)
 	{
-		::PlaySound(errorVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
 		ChangeButtonToErrorMode(btn);
 		DecreaseHealth();
 		ShowHangmanImage();
+
+		if (errorNumber == 8)
+		{
+			::PlaySound(loseVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+			ShowAnswer(key);
+			mapFunction.clear();
+			for (auto& item : btns)
+			{
+				item->EnableWindow(FALSE);
+			}
+		}
+		else
+		{
+			::PlaySound(errorVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+		}
 	}
 	else
 	{
-		::PlaySound(correctVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
 		ChangeButtonToCorrectMode(btn);
+		if (numberOfLetter <= 0)
+		{
+			numberOfLetter = 0;
+			::PlaySound(winVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+			for (auto& item : btns)
+			{
+				item->EnableWindow(FALSE);
+			}
+		}
+		else
+		{
+			::PlaySound(correctVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
+		}
+	}
+}
+
+void CenglishgameDlg::ShowAnswer(std::string& key)
+{
+	for (size_t i{}; i < key.size(); i++)
+	{
+		edits[i]->SetWindowText(CString(key[i]));
 	}
 }
 
@@ -443,6 +491,7 @@ void CenglishgameDlg::ChangeButtonToCorrectMode(CMFCButton* btn)
 	btn->m_bTransparent = false;
 	btn->SetFaceColor(RGB(153, 255, 153), true);
 	btn->SetTextColor(RGB(0, 102, 51));
+	btn->EnableWindow(FALSE);
 }
 
 void CenglishgameDlg::SelectRandomTarget(const std::vector<Expression>& lesson)
@@ -459,6 +508,7 @@ void CenglishgameDlg::ChangeButtonToErrorMode(CMFCButton* btn)
 	btn->m_bTransparent = false;
 	btn->SetFaceColor(RGB(255, 153, 204), true);
 	btn->SetTextColor(RGB(102, 0, 51));
+	btn->EnableWindow(FALSE);
 }
 
 void CenglishgameDlg::InitializeBtns()
@@ -491,7 +541,11 @@ void CenglishgameDlg::InitializeBtns()
 	btns.emplace_back(&m_btnW);
 
 	ResetKeyboardButtons();
+}
 
+void CenglishgameDlg::ConnectKeyboard()
+{
+	mapFunction.clear();
 	auto keyboardCode = 0x41;
 	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetA, this);
 	mapFunction[keyboardCode++] = std::bind(&CenglishgameDlg::GetB, this);
@@ -755,13 +809,24 @@ void CenglishgameDlg::GoNext()
 	}
 	target = lesson[targetIndex];
 
+	ConnectKeyboard();
 	ShowMainImage(target.imageName);
 	InitializeHint();
 	errorNumber = 1;
+	CalculateNumberOfLetter();
 	ResetDisplay(target.key);
 	ShowHangmanImage();
 	ResetKeyboardButtons();
 	UpdateHint(target.hint);
+	ResetBtns();
+}
+
+void CenglishgameDlg::ResetBtns()
+{
+	for (auto& item : btns)
+	{
+		item->EnableWindow(TRUE);
+	}
 }
 
 void CenglishgameDlg::ResetDisplay(const std::string& input)
@@ -791,6 +856,7 @@ BOOL CenglishgameDlg::PreTranslateMessage(MSG* pMsg)
 		if (mapFunction.count(pMsg->wParam))
 		{
 			mapFunction[pMsg->wParam]();
+			mapFunction.erase(pMsg->wParam);
 		}
 	}
 	return CDialog::PreTranslateMessage(pMsg);
