@@ -187,6 +187,7 @@ BOOL CenglishgameDlg::OnInitDialog()
 	InitializeLesson();
 	ShowHangmanImage();
 	lesson = GetLesson(L"lesson-1.json");
+	CheckImage(lesson);
 	SelectRandomTarget(lesson);
 	CalculateNumberOfLetter();
 	ResetDisplay(target.key);
@@ -594,8 +595,27 @@ void CenglishgameDlg::ShowMainImage(std::string& fileName)
 	auto name = std::wstring(fileName.begin(), fileName.end());
 	auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(name));
 	viewImage.Load(imagePath.c_str());
-	viewBitmap.Attach(viewImage.Detach());
-	mp_pictureControlMain->SetBitmap((HBITMAP)viewBitmap.Detach());
+	if(viewImage)
+	{
+		viewBitmap.Attach(viewImage.Detach());
+		CRect rect;
+		mp_pictureControlMain->GetWindowRect(&rect);
+		mp_pictureControlMain->SetWindowPos(NULL, 0, 0, 320, 400, SWP_NOMOVE | SWP_NOZORDER);
+		mp_pictureControlMain->SetBitmap((HBITMAP)viewBitmap.Detach());
+	}
+} 
+
+void CenglishgameDlg::CheckImage(std::vector<Expression>& lesson)
+{
+	lesson.erase(std::remove_if(lesson.begin(), lesson.end(),
+		[&](Expression const& item)
+		{
+			auto name = std::wstring(item.imageName.begin(), item.imageName.end());
+			auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(name));
+			CImage view;
+			view.Load(imagePath.c_str());
+			return view == nullptr;
+		}), lesson.end());
 }
 
 void CenglishgameDlg::ShowHangmanImage()

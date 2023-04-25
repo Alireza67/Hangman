@@ -24,9 +24,9 @@ std::vector<Expression> DatabaseReader::ReadInformation(pt::ptree const& root)
 		{
 			for (auto& item : node.second)
 			{
-				auto key = item.second.get<std::string>("key", "NONE");
-				auto hint = item.second.get<std::string>("hint", "NONE");
-				auto image = item.second.get<std::string>("image", "NONE");
+				auto key = item.second.get<std::string>("key", "");
+				auto hint = item.second.get<std::string>("hint", "");
+				auto image = item.second.get<std::string>("image", "");
 				if (!(key.empty() || hint.empty() || image.empty()))
 				{
 					output.emplace_back(Expression{ .key = key, .hint = hint, .imageName = image });

@@ -61,6 +61,7 @@ public:
 	void ResetDisplay(const std::string& input);
 	void ChangeButtonToErrorMode(CMFCButton* btn);
 	void ChangeButtonToCorrectMode(CMFCButton* btn);
+	void CheckImage(std::vector<Expression>& lesson);
 	void SelectRandomTarget(const std::vector<Expression>& lesson);
 	void CheckWithTarget(CMFCButton* btn, const CString& input);
 	void ShowAnswer(std::string& key);
