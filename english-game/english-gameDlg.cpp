@@ -629,6 +629,8 @@ void CenglishgameDlg::ShowMainImage(std::string& fileName)
 
 void CenglishgameDlg::CheckImage(std::vector<Expression>& lesson)
 {
+	auto initialSize = lesson.size();
+
 	lesson.erase(std::remove_if(lesson.begin(), lesson.end(),
 		[&](Expression const& item)
 		{
@@ -638,6 +640,20 @@ void CenglishgameDlg::CheckImage(std::vector<Expression>& lesson)
 			view.Load(imagePath.c_str());
 			return view == nullptr;
 		}), lesson.end());
+
+	auto finalSize = lesson.size();
+	auto error = initialSize - finalSize;
+
+	if (error)
+	{
+		auto msg = std::wstring(L"Couldn't load ") + std::to_wstring(error) + std::wstring(L" Image(s)!");
+		msg += std::wstring(L"\nPlease check image(s).");
+		MessageBox(
+			msg.c_str(),
+			L"Error",
+			MB_ICONEXCLAMATION | MB_OK
+		);
+	}
 }
 
 void CenglishgameDlg::ShowHangmanImage()
