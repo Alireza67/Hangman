@@ -188,6 +188,7 @@ BOOL CenglishgameDlg::OnInitDialog()
 	ShowHangmanImage();
 	lesson = GetLesson(L"lesson-1.json");
 	CheckImage(lesson);
+	CheckEmptyLesson();
 	SelectRandomTarget(lesson);
 	CalculateNumberOfLetter();
 	ResetDisplay(target.key);
@@ -224,6 +225,19 @@ BOOL CenglishgameDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void CenglishgameDlg::CheckEmptyLesson()
+{
+	if (lesson.empty())
+	{
+		MessageBox(
+			L"There aren't any valid fields.\nPlease check lesson files.",
+			L"Error",
+			MB_ICONEXCLAMATION | MB_OK
+		);
+		exit(1);
+	}
 }
 
 void CenglishgameDlg::CalculateNumberOfLetter()
@@ -359,8 +373,11 @@ void CenglishgameDlg::InitializeNextButton()
 {
 	auto path = fs::path(hangmanDirectory) / fs::path("next.jpg");
 	viewImage.Load(path.c_str());
-	viewBitmap.Attach(viewImage.Detach());
-	next.SetBitmap((HBITMAP)viewBitmap.Detach());
+	if(viewImage)
+	{
+		viewBitmap.Attach(viewImage.Detach());
+		next.SetBitmap((HBITMAP)viewBitmap.Detach());
+	}
 }
 
 void CenglishgameDlg::InitializeImages()
@@ -454,6 +471,7 @@ void CenglishgameDlg::CheckWithTarget(CMFCButton* btn, const CString& input)
 		ChangeButtonToCorrectMode(btn);
 		if (numberOfLetter <= 0)
 		{
+			mapFunction.clear();
 			numberOfLetter = 0;
 			::PlaySound(winVoicePath.c_str(), NULL, SND_FILENAME | SND_ASYNC);
 			for (auto& item : btns)
@@ -603,6 +621,10 @@ void CenglishgameDlg::ShowMainImage(std::string& fileName)
 		mp_pictureControlMain->SetWindowPos(NULL, 0, 0, 320, 400, SWP_NOMOVE | SWP_NOZORDER);
 		mp_pictureControlMain->SetBitmap((HBITMAP)viewBitmap.Detach());
 	}
+	else
+	{
+		mp_pictureControlMain->SetBitmap(NULL);
+	}
 } 
 
 void CenglishgameDlg::CheckImage(std::vector<Expression>& lesson)
@@ -625,8 +647,15 @@ void CenglishgameDlg::ShowHangmanImage()
 	auto fullName = name + number + L".jpg";
 	auto imagePath = std::wstring(fs::path(hangmanDirectory) / fs::path(fullName));
 	viewImage.Load(imagePath.c_str());
-	viewBitmap.Attach(viewImage.Detach());
-	mp_pictureControlHangMan->SetBitmap((HBITMAP)viewBitmap.Detach());
+	if(viewImage)
+	{
+		viewBitmap.Attach(viewImage.Detach());
+		mp_pictureControlHangMan->SetBitmap((HBITMAP)viewBitmap.Detach());
+	}
+	else
+	{
+		mp_pictureControlHangMan->SetBitmap(NULL);
+	}
 }
 
 void CenglishgameDlg::UpdateHint(const std::string& hint)
