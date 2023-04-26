@@ -171,6 +171,7 @@ BEGIN_MESSAGE_MAP(CenglishgameDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON25, &CenglishgameDlg::GetY)
 	ON_BN_CLICKED(IDC_BUTTON26, &CenglishgameDlg::GetZ)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CenglishgameDlg::GoNext)
+	ON_COMMAND(ID_FILE_SELECTLESSON, &CenglishgameDlg::SelectLesson)
 END_MESSAGE_MAP()
 
 
@@ -178,24 +179,15 @@ END_MESSAGE_MAP()
 
 BOOL CenglishgameDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CDialogEx::OnInitDialog();	
 	Initialize();
-	ConnectKeyboard();
-	SetFont();
-	InitializeSounds();
-	InitializeImages();
-	InitializeLesson();
-	ShowHangmanImage();
-	lesson = GetLesson(L"lesson-1.json");
-	CheckImage(lesson);
-	CheckEmptyLesson();
+
+	auto lessonFile = L"lesson-1.json";
+	std::wstring filePath = fs::path(lessonsDirectory) / fs::path(lessonFile);
+
+	LoadLesson(filePath);
 	SelectRandomTarget(lesson);
-	CalculateNumberOfLetter();
-	ResetDisplay(target.key);
-	ShowMainImage(target.imageName);
-	InitializeHint();
-	InitializeNextButton();
-	UpdateHint(target.hint);
+	ResetAndLoadQuestion();
 	
 	// Add "About..." menu item to system menu.
 
@@ -225,6 +217,21 @@ BOOL CenglishgameDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+void CenglishgameDlg::LoadLesson(std::wstring& filePath)
+{
+	lesson = GetLesson(filePath);
+	CheckImage(lesson);
+	CheckEmptyLesson();
+}
+
+void CenglishgameDlg::LoadMainMenu()
+{
+	CMenu menu;
+	menu.LoadMenu(IDR_MENU);
+	SetMenu(&menu);
+	DrawMenuBar();
 }
 
 void CenglishgameDlg::CheckEmptyLesson()
@@ -314,8 +321,15 @@ void CenglishgameDlg::SetFont()
 
 void CenglishgameDlg::Initialize()
 {
-	InitializeEdits();
 	InitializeBtns();
+	InitializeEdits();
+	SetFont();
+	InitializeHint();
+	InitializeSounds();
+	InitializeImages();
+	InitializeLesson();
+	InitializeNextButton();
+	LoadMainMenu();
 }
 
 void CenglishgameDlg::InitializeEdits()
@@ -874,9 +888,13 @@ void CenglishgameDlg::GoNext()
 	}
 	target = lesson[targetIndex];
 
+	ResetAndLoadQuestion();
+}
+
+void CenglishgameDlg::ResetAndLoadQuestion()
+{
 	ConnectKeyboard();
 	ShowMainImage(target.imageName);
-	InitializeHint();
 	errorNumber = 1;
 	CalculateNumberOfLetter();
 	ResetDisplay(target.key);
@@ -925,4 +943,21 @@ BOOL CenglishgameDlg::PreTranslateMessage(MSG* pMsg)
 		}
 	}
 	return CDialog::PreTranslateMessage(pMsg);
+}
+
+
+void CenglishgameDlg::SelectLesson()
+{
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST | 
+		OFN_HIDEREADONLY, _T("Json Files (*.json)|*.json|All Files (*.*)|*.*||"));
+	
+	dlg.m_ofn.lpstrInitialDir = lessonsDirectory.c_str();
+	
+	if (dlg.DoModal() == IDOK)
+	{
+		std::wstring fullPath(CW2W(dlg.GetPathName().GetString(), CP_UTF8));
+		LoadLesson(fullPath);
+		SelectRandomTarget(lesson);
+		ResetAndLoadQuestion();
+	}
 }
