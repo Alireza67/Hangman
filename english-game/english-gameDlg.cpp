@@ -27,15 +27,15 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg();
 
-// Dialog Data
+	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-// Implementation
+	// Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
 };
@@ -172,6 +172,7 @@ BEGIN_MESSAGE_MAP(CenglishgameDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON26, &CenglishgameDlg::GetZ)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CenglishgameDlg::GoNext)
 	ON_COMMAND(ID_FILE_SELECTLESSON, &CenglishgameDlg::SelectLesson)
+	ON_COMMAND(ID_HELP_ABOUT, &CenglishgameDlg::ShowAuthorProperties)
 END_MESSAGE_MAP()
 
 
@@ -179,7 +180,7 @@ END_MESSAGE_MAP()
 
 BOOL CenglishgameDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();	
+	CDialogEx::OnInitDialog();
 	Initialize();
 
 	auto lessonFile = L"lesson-1.json";
@@ -188,7 +189,7 @@ BOOL CenglishgameDlg::OnInitDialog()
 	LoadLesson(filePath);
 	SelectRandomTarget(lesson);
 	ResetAndLoadQuestion();
-	
+
 	// Add "About..." menu item to system menu.
 
 	// IDM_ABOUTBOX must be in the system command range.
@@ -387,7 +388,7 @@ void CenglishgameDlg::InitializeNextButton()
 {
 	auto path = fs::path(hangmanDirectory) / fs::path("next.jpg");
 	viewImage.Load(path.c_str());
-	if(viewImage)
+	if (viewImage)
 	{
 		viewBitmap.Attach(viewImage.Detach());
 		next.SetBitmap((HBITMAP)viewBitmap.Detach());
@@ -402,7 +403,7 @@ void CenglishgameDlg::InitializeImages()
 	::GetCurrentDirectory(size, const_cast<LPWSTR>(buffer.data()));
 	imageDirectory = fs::path(buffer) / fs::path("images");
 	hangmanDirectory = fs::path(buffer) / fs::path("hangman");
-	
+
 	mp_pictureControlMain = (CStatic*)GetDlgItem(IDC_PIC_MAIN);
 	mp_pictureControlHangMan = (CStatic*)GetDlgItem(IDC_PIC_HANGMAN);
 }
@@ -627,7 +628,7 @@ void CenglishgameDlg::ShowMainImage(std::string& fileName)
 	auto name = std::wstring(fileName.begin(), fileName.end());
 	auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(name));
 	viewImage.Load(imagePath.c_str());
-	if(viewImage)
+	if (viewImage)
 	{
 		viewBitmap.Attach(viewImage.Detach());
 		CRect rect;
@@ -639,7 +640,7 @@ void CenglishgameDlg::ShowMainImage(std::string& fileName)
 	{
 		mp_pictureControlMain->SetBitmap(NULL);
 	}
-} 
+}
 
 void CenglishgameDlg::CheckImage(std::vector<Expression>& lesson)
 {
@@ -649,10 +650,10 @@ void CenglishgameDlg::CheckImage(std::vector<Expression>& lesson)
 		[&](Expression const& item)
 		{
 			auto name = std::wstring(item.imageName.begin(), item.imageName.end());
-			auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(name));
-			CImage view;
-			view.Load(imagePath.c_str());
-			return view == nullptr;
+	auto imagePath = std::wstring(fs::path(imageDirectory) / fs::path(name));
+	CImage view;
+	view.Load(imagePath.c_str());
+	return view == nullptr;
 		}), lesson.end());
 
 	auto finalSize = lesson.size();
@@ -677,7 +678,7 @@ void CenglishgameDlg::ShowHangmanImage()
 	auto fullName = name + number + L".jpg";
 	auto imagePath = std::wstring(fs::path(hangmanDirectory) / fs::path(fullName));
 	viewImage.Load(imagePath.c_str());
-	if(viewImage)
+	if (viewImage)
 	{
 		viewBitmap.Attach(viewImage.Detach());
 		mp_pictureControlHangMan->SetBitmap((HBITMAP)viewBitmap.Detach());
@@ -928,7 +929,7 @@ void CenglishgameDlg::ResetDisplay(const std::string& input)
 			{
 				edits[i]->ShowWindow(SW_SHOW);
 			}
-		}		
+		}
 	}
 }
 
@@ -945,14 +946,13 @@ BOOL CenglishgameDlg::PreTranslateMessage(MSG* pMsg)
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-
 void CenglishgameDlg::SelectLesson()
 {
-	CFileDialog dlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST | 
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_FILEMUSTEXIST |
 		OFN_HIDEREADONLY, _T("Json Files (*.json)|*.json|All Files (*.*)|*.*||"));
-	
+
 	dlg.m_ofn.lpstrInitialDir = lessonsDirectory.c_str();
-	
+
 	if (dlg.DoModal() == IDOK)
 	{
 		std::wstring fullPath(CW2W(dlg.GetPathName().GetString(), CP_UTF8));
@@ -960,4 +960,13 @@ void CenglishgameDlg::SelectLesson()
 		SelectRandomTarget(lesson);
 		ResetAndLoadQuestion();
 	}
+}
+
+void CenglishgameDlg::ShowAuthorProperties()
+{
+	MessageBox(
+		L"Author: Reyhaneh Salehi\nEmail: reyhaneh.salehi89@gmail.com.",
+		L"Author",
+		MB_ICONEXCLAMATION | MB_OK
+	);
 }
