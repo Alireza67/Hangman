@@ -182,13 +182,12 @@ BOOL CenglishgameDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	Initialize();
-
-	auto lessonFile = L"lesson-1.json";
-	std::wstring filePath = fs::path(lessonsDirectory) / fs::path(lessonFile);
-
-	LoadLesson(filePath);
-	SelectRandomTarget(lesson);
-	ResetAndLoadQuestion();
+	do
+	{
+		SelectLesson();
+		if (state == 2)
+			exit(1);
+	} while (!state);
 
 	// Add "About..." menu item to system menu.
 
@@ -220,11 +219,11 @@ BOOL CenglishgameDlg::OnInitDialog()
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-void CenglishgameDlg::LoadLesson(std::wstring& filePath)
+bool CenglishgameDlg::LoadLesson(std::wstring& filePath)
 {
 	lesson = GetLesson(filePath);
 	CheckImage(lesson);
-	CheckEmptyLesson();
+	return CheckEmptyLesson();
 }
 
 void CenglishgameDlg::LoadMainMenu()
@@ -235,7 +234,7 @@ void CenglishgameDlg::LoadMainMenu()
 	DrawMenuBar();
 }
 
-void CenglishgameDlg::CheckEmptyLesson()
+bool CenglishgameDlg::CheckEmptyLesson()
 {
 	if (lesson.empty())
 	{
@@ -244,8 +243,9 @@ void CenglishgameDlg::CheckEmptyLesson()
 			L"Error",
 			MB_ICONEXCLAMATION | MB_OK
 		);
-		exit(1);
+		return false;
 	}
+	return true;
 }
 
 void CenglishgameDlg::CalculateNumberOfLetter()
@@ -530,8 +530,9 @@ void CenglishgameDlg::ChangeButtonToCorrectMode(CMFCButton* btn)
 
 void CenglishgameDlg::SelectRandomTarget(const std::vector<Expression>& lesson)
 {
-	std::srand(std::time(nullptr));
-	targetIndex = std::rand() % lesson.size();
+	//std::srand(std::time(nullptr));
+	//targetIndex = std::rand() % lesson.size();
+	targetIndex = 0;
 	target = lesson[targetIndex];
 }
 
@@ -956,10 +957,18 @@ void CenglishgameDlg::SelectLesson()
 	if (dlg.DoModal() == IDOK)
 	{
 		std::wstring fullPath(CW2W(dlg.GetPathName().GetString(), CP_UTF8));
-		LoadLesson(fullPath);
+		if (!LoadLesson(fullPath))
+		{
+			state = 0;
+			return;
+		}
 		SelectRandomTarget(lesson);
 		ResetAndLoadQuestion();
+		state = 1;
+		return;
 	}
+	state = 2;
+	return;
 }
 
 void CenglishgameDlg::ShowAuthorProperties()

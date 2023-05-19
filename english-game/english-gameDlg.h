@@ -35,8 +35,8 @@ protected:
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
-	void LoadLesson(std::wstring& filePath);
-	void CheckEmptyLesson();
+	bool LoadLesson(std::wstring& filePath);
+	bool CheckEmptyLesson();
 	void CalculateNumberOfLetter();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
@@ -146,4 +146,5 @@ public:
 
 	uint8_t errorNumber{ 1 };
 	int16_t numberOfLetter{};
+	int16_t state{};
 };
